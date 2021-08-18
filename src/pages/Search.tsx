@@ -36,7 +36,9 @@ function Search() {
   const [items, setItems] = useState([]);
 
   const searchItems = useCallback(async () => {
-    let items = await axios.post('http://localhost:4000/', { keyword }).then(data => data.data);
+    let items = await axios
+      .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
+      .then(data => data.data);
     items = items.filter((item: Item) => !item.outOfStock).concat(items.filter((item: Item) => item.outOfStock));
     setItems(items);
     setLoading(false);

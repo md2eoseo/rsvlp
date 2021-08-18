@@ -1,9 +1,10 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const cheerio = require('cheerio');
 const axios = require('axios');
 const phantom = require('phantom');
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 const shops = { gimbab: '김밥레코즈', soundsgood: '사운즈굿 스토어', doperecord: '도프레코드' };
@@ -16,6 +17,8 @@ const searchUrls = {
 
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../build')));
 
 const getHtml = async (shop, url) => {
   try {
