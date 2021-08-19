@@ -7,12 +7,18 @@ const phantom = require('phantom');
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-const shops = { gimbab: '김밥레코즈', soundsgood: '사운즈굿 스토어', doperecord: '도프레코드' };
-const baseUrls = { gimbab: 'https://gimbabrecords.com', soundsgood: 'https://soundsgood-store.com', doperecord: 'https://doperecord.com' };
+const shops = { gimbab: '김밥레코즈', soundsgood: '사운즈굿 스토어', doperecord: '도프레코드', rm360: 'rm.360' };
+const baseUrls = {
+  gimbab: 'https://gimbabrecords.com',
+  soundsgood: 'https://soundsgood-store.com',
+  doperecord: 'https://doperecord.com',
+  rm360: 'http://rm360.cafe24.com',
+};
 const searchUrls = {
   gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
   //   soundsgood: 'https://soundsgood-store.com/productSearch?',
   doperecord: 'https://doperecord.com/product/search.html?keyword=',
+  rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
 };
 
 app.use(cors());
@@ -44,6 +50,8 @@ const getPageNums = async keyword => {
           break;
         case 'doperecord':
           page = $('.xans-search-paging .xans-record-').length;
+        case 'rm360':
+          page = $('.xans-search-paging .xans-record-').length;
         default:
           break;
       }
@@ -66,6 +74,8 @@ const generateSearchUrl = (shop, keyword, page) => {
     case 'soundsgood':
       return `${searchUrls[shop]}${page + 1 === 1 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
     case 'doperecord':
+      return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
+    case 'rm360':
       return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
     default:
       break;
@@ -113,6 +123,18 @@ const getItems = async (keyword, pageNums) => {
                 outOfStock: $('.promotion img', el)?.attr('alt') === '품절',
                 imgUrl: 'https:' + $('.prdImg img', el).attr('src'),
                 url: baseUrls[shop] + $('.prdImg a', el).attr('href'),
+              };
+            });
+            break;
+          case 'rm360':
+            $('.prdList > li').each((i, el) => {
+              items[i] = {
+                shop: shops[shop],
+                name: $('.name', el).text().trim(),
+                price: $('ul.xans-search-listitem .title', el).next().first().text().trim(),
+                outOfStock: $('.icon .icon_img', el)?.attr('alt') === '품절',
+                imgUrl: 'http:' + $('.thumb', el).attr('src'),
+                url: baseUrls[shop] + $('.box > a', el).attr('href'),
               };
             });
             break;
