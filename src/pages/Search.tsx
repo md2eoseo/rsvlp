@@ -36,6 +36,7 @@ function Search() {
   const [items, setItems] = useState([]);
 
   const searchItems = useCallback(async () => {
+    setLoading(true);
     let items = await axios
       .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
       .then(data => data.data);
