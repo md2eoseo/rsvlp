@@ -5,7 +5,6 @@ import logo from '../logo.svg';
 
 const Container = styled.form`
   position: relative;
-  height: 64px;
   width: 60vw;
   min-width: 280px;
   border-radius: 50vh;
@@ -14,7 +13,7 @@ const Container = styled.form`
 
 const SearchInput = styled.input`
   width: 100%;
-  height: 100%;
+  height: 64px;
   padding-left: 32px;
   padding-right: 72px;
   font-size: 1.8rem;
@@ -57,20 +56,31 @@ const Logo = styled.img`
     }
   }
 `;
+
+const ErrorMsg = styled.p`
+  margin: 20px auto 0 auto;
+  color: white;
+  font-size: 32px;
+  text-align: center;
+`;
+
 function SearchBar({ initialKeyword = '' }: any) {
   const history = useHistory();
   const [keyword, setKeyword] = useState(initialKeyword);
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   const handleKeywordChange = (e: any) => {
     const {
       target: { value },
     } = e;
     setKeyword(value);
+    setErrorMsg('');
   };
 
   const onSearch = (e: any) => {
     e.preventDefault();
-    history.push(`/search?keyword=${keyword}`);
+    if (keyword.length > 1) history.push(`/search?keyword=${keyword}`);
+    else setErrorMsg('검색어는 최소 2자 이상 적어주세요.');
   };
   return (
     <Container>
@@ -78,6 +88,7 @@ function SearchBar({ initialKeyword = '' }: any) {
       <SearchButton type="submit" onClick={onSearch}>
         <Logo src={logo} alt="searchButton" />
       </SearchButton>
+      {errorMsg !== '' && <ErrorMsg>{errorMsg}</ErrorMsg>}
     </Container>
   );
 }

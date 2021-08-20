@@ -62,7 +62,7 @@ const getPageNums = async keyword => {
         const browser = await puppeteer.launch();
         const rawPage = await browser.newPage();
         const result = rawPage
-          .waitForSelector('.paginationNumbers', { timeout: 5000 })
+          .waitForSelector('.paginationNumbers', { timeout: 4000 })
           .then(() => rawPage.content())
           .then(async html => {
             const $ = cheerio.load(html);
@@ -164,7 +164,7 @@ const getItems = async (keyword, pageNums) => {
           const browser = await puppeteer.launch();
           const rawPage = await browser.newPage();
           const items = rawPage
-            .waitForSelector('.productListPage')
+            .waitForSelector('.productListPage', { timeout: 4000 })
             .then(() => rawPage.content())
             .then(async html => {
               const items = [];
@@ -190,7 +190,10 @@ const getItems = async (keyword, pageNums) => {
               await browser.close();
               return items;
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+              console.log(err);
+              return [];
+            });
           return rawPage.goto(generateSearchUrl(shop, keyword, i)).then(() => items);
       }
     });

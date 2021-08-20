@@ -32,17 +32,19 @@ const Items = styled.div`
 function Search() {
   const { search } = useLocation();
   const keyword = qs.parse(search.slice(1)).keyword;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>();
   const [items, setItems] = useState([]);
 
   const searchItems = useCallback(async () => {
-    setLoading(true);
-    let items = await axios
-      .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
-      .then(data => data.data);
-    items = items.filter((item: Item) => !item.outOfStock).concat(items.filter((item: Item) => item.outOfStock));
-    setItems(items);
-    setLoading(false);
+    if (keyword.length > 1) {
+      setLoading(true);
+      let items = await axios
+        .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
+        .then(data => data.data);
+      items = items.filter((item: Item) => !item.outOfStock).concat(items.filter((item: Item) => item.outOfStock));
+      setItems(items);
+      setLoading(false);
+    }
   }, [keyword]);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ function Search() {
         <Items
           style={{ textAlign: 'center', color: 'white', fontSize: '24px', fontWeight: 'bold', letterSpacing: '2px', wordSpacing: '2px' }}
         >
-          검색 결과 없음
+          {keyword.length > 1 ? `"${keyword}"에 해당하는 검색 결과 없음` : '검색어는 최소 2자 이상 적어주세요.'}
         </Items>
       ) : (
         <Items>
