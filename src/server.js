@@ -7,13 +7,21 @@ const axios = require('axios');
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-const shops = { gimbab: '김밥레코즈', doperecord: '도프레코드', rm360: 'rm.360', soundsgood: '사운즈굿 스토어', seoulvinyl: '서울바이닐' };
+const shops = {
+  gimbab: '김밥레코즈',
+  doperecord: '도프레코드',
+  rm360: 'rm.360',
+  soundsgood: '사운즈굿 스토어',
+  seoulvinyl: '서울바이닐',
+  welcome: '웰컴레코즈',
+};
 const baseUrls = {
   gimbab: 'https://gimbabrecords.com',
   doperecord: 'https://doperecord.com',
   rm360: 'http://rm360.cafe24.com',
   soundsgood: 'https://soundsgood-store.com',
   seoulvinyl: 'https://www.seoulvinyl.com',
+  welcome: 'https://welcomerecords.kr',
 };
 const searchUrls = {
   gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
@@ -21,6 +29,7 @@ const searchUrls = {
   rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
   soundsgood: 'https://soundsgood-store.com/productSearch?',
   seoulvinyl: 'https://www.seoulvinyl.com/productSearch?',
+  welcome: 'https://welcomerecords.kr/productSearch?',
 };
 
 app.use(cors());
@@ -62,6 +71,7 @@ const getPageNums = async keyword => {
         });
       case 'soundsgood':
       case 'seoulvinyl':
+      case 'welcome':
         const browser = await puppeteer.launch();
         const rawPage = await browser.newPage();
         const result = rawPage
@@ -72,6 +82,7 @@ const getPageNums = async keyword => {
             switch (shop) {
               case 'soundsgood':
               case 'seoulvinyl':
+              case 'welcome':
                 page = $('.paginationNumbers').children().length;
                 break;
               default:
@@ -104,6 +115,7 @@ const generateSearchUrl = (shop, keyword, page) => {
       return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
     case 'soundsgood':
     case 'seoulvinyl':
+    case 'welcome':
       return `${searchUrls[shop]}${page + 1 === 1 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
     default:
       break;
@@ -165,6 +177,7 @@ const getItems = async (keyword, pageNums) => {
           });
         case 'soundsgood':
         case 'seoulvinyl':
+        case 'welcome':
           const browser = await puppeteer.launch();
           const rawPage = await browser.newPage();
           const items = rawPage
@@ -176,6 +189,7 @@ const getItems = async (keyword, pageNums) => {
               switch (shop) {
                 case 'soundsgood':
                 case 'seoulvinyl':
+                case 'welcome':
                   $('.productListPage')
                     .children()
                     .each((i, el) => {
