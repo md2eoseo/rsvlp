@@ -7,18 +7,20 @@ const axios = require('axios');
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-const shops = { gimbab: '김밥레코즈', doperecord: '도프레코드', rm360: 'rm.360', soundsgood: '사운즈굿 스토어' };
+const shops = { gimbab: '김밥레코즈', doperecord: '도프레코드', rm360: 'rm.360', soundsgood: '사운즈굿 스토어', seoulvinyl: '서울바이닐' };
 const baseUrls = {
   gimbab: 'https://gimbabrecords.com',
   doperecord: 'https://doperecord.com',
   rm360: 'http://rm360.cafe24.com',
   soundsgood: 'https://soundsgood-store.com',
+  seoulvinyl: 'https://www.seoulvinyl.com',
 };
 const searchUrls = {
   gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
   doperecord: 'https://doperecord.com/product/search.html?keyword=',
   rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
   soundsgood: 'https://soundsgood-store.com/productSearch?',
+  seoulvinyl: 'https://www.seoulvinyl.com/productSearch?',
 };
 
 app.use(cors());
@@ -59,15 +61,17 @@ const getPageNums = async keyword => {
           return { shop, page };
         });
       case 'soundsgood':
+      case 'seoulvinyl':
         const browser = await puppeteer.launch();
         const rawPage = await browser.newPage();
         const result = rawPage
-          .waitForSelector('.paginationNumbers', { timeout: 4000 })
+          .waitForSelector('.paginationNumbers', { timeout: 5000 })
           .then(() => rawPage.content())
           .then(async html => {
             const $ = cheerio.load(html);
             switch (shop) {
               case 'soundsgood':
+              case 'seoulvinyl':
                 page = $('.paginationNumbers').children().length;
                 break;
               default:
@@ -95,13 +99,12 @@ const getPageNums = async keyword => {
 const generateSearchUrl = (shop, keyword, page) => {
   switch (shop) {
     case 'gimbab':
-      return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
-    case 'soundsgood':
-      return `${searchUrls[shop]}${page + 1 === 1 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
     case 'doperecord':
-      return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
     case 'rm360':
       return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
+    case 'soundsgood':
+    case 'seoulvinyl':
+      return `${searchUrls[shop]}${page + 1 === 1 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
     default:
       break;
   }
@@ -161,16 +164,18 @@ const getItems = async (keyword, pageNums) => {
             return items;
           });
         case 'soundsgood':
+        case 'seoulvinyl':
           const browser = await puppeteer.launch();
           const rawPage = await browser.newPage();
           const items = rawPage
-            .waitForSelector('.productListPage', { timeout: 4000 })
+            .waitForSelector('.productListPage', { timeout: 5000 })
             .then(() => rawPage.content())
             .then(async html => {
               const items = [];
               const $ = cheerio.load(html);
               switch (shop) {
                 case 'soundsgood':
+                case 'seoulvinyl':
                   $('.productListPage')
                     .children()
                     .each((i, el) => {
