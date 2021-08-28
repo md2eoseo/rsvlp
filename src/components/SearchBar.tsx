@@ -16,18 +16,25 @@ const SearchInput = styled.input`
   height: 64px;
   padding-left: 32px;
   padding-right: 72px;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   border: none;
   border-radius: 50vh;
   outline: none;
   ::placeholder {
     font-size: 1.5rem;
   }
+  @media (max-width: 800px) {
+    height: 32px;
+    padding-left: 16px;
+    padding-right: 36px;
+    font-size: 1rem;
+    ::placeholder {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const SearchButton = styled.button`
-  min-height: 60px;
-  min-width: 60px;
   position: absolute;
   right: 2px;
   top: 2px;
@@ -36,15 +43,25 @@ const SearchButton = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 50vh;
+  border-radius: 60px;
   outline: none;
   background-color: transparent;
+  @media (max-width: 800px) {
+    right: 1px;
+    top: 1px;
+  }
 `;
 
 const Logo = styled.img`
+  width: 60px;
+  height: 60px;
   animation: spin infinite 10s linear;
   :hover {
     animation-duration: 3s;
+  }
+  @media (max-width: 800px) {
+    width: 30px;
+    height: 30px;
   }
 
   @keyframes spin {
@@ -60,14 +77,17 @@ const Logo = styled.img`
 const ErrorMsg = styled.p`
   margin: 20px auto 0 auto;
   color: white;
-  font-size: 32px;
+  font-size: 1.5rem;
   text-align: center;
+  @media (max-width: 800px) {
+    font-size: 1rem;
+  }
 `;
 
 function SearchBar({ initialKeyword = '' }: any) {
   const history = useHistory();
   const [keyword, setKeyword] = useState(initialKeyword);
-  const [errorMsg, setErrorMsg] = useState<string>();
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
   const handleKeywordChange = (e: any) => {
     const {
@@ -79,12 +99,13 @@ function SearchBar({ initialKeyword = '' }: any) {
 
   const onSearch = (e: any) => {
     e.preventDefault();
-    if (keyword.length > 1) history.push(`/search?keyword=${keyword}`);
+    const trimmedKeyword = keyword.trim();
+    if (trimmedKeyword.length > 1) history.push(`/search?keyword=${trimmedKeyword}`);
     else setErrorMsg('검색어는 최소 2자 이상 적어주세요.');
   };
   return (
     <Container>
-      <SearchInput value={keyword} placeholder="가수 이름 / 노래 제목으로 검색해보세요!" onChange={handleKeywordChange} />
+      <SearchInput value={keyword} placeholder="가수 / 앨범명으로 검색" onChange={handleKeywordChange} />
       <SearchButton type="submit" onClick={onSearch}>
         <Logo src={logo} alt="searchButton" />
       </SearchButton>
