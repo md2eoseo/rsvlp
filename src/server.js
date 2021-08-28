@@ -27,9 +27,9 @@ const searchUrls = {
   gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
   doperecord: 'https://doperecord.com/product/search.html?keyword=',
   rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
-  soundsgood: 'https://soundsgood-store.com/productSearch?',
-  seoulvinyl: 'https://www.seoulvinyl.com/productSearch?',
-  welcome: 'https://welcomerecords.kr/productSearch?',
+  // soundsgood: 'https://soundsgood-store.com/productSearch?',
+  // seoulvinyl: 'https://www.seoulvinyl.com/productSearch?',
+  // welcome: 'https://welcomerecords.kr/productSearch?',
 };
 
 app.use(cors());
