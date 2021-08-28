@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 const Container = styled.div`
   position: relative;
@@ -10,7 +10,7 @@ const Container = styled.div`
   border-radius: 10px;
   background-color: #fff;
   margin-bottom: 20px;
-  @media (max-width: 425px) {
+  @media (max-width: 800px) {
     flex-direction: column;
     margin: 0 20px 20px 20px;
   }
@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const Image = styled.img`
   width: 40%;
-  @media (max-width: 425px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
 `;
@@ -30,7 +30,7 @@ const Info = styled.div`
   margin-left: 20px;
   height: 100%;
   width: 50%;
-  @media (max-width: 425px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
   padding: 10px;
@@ -51,11 +51,11 @@ const OutOfStockField = styled.p`
   font-weight: bold;
   position: absolute;
 
-  @media (min-width: 425px) {
+  @media (min-width: 800px) {
     right: 10px;
     top: 10px;
   }
-  @media (max-width: 425px) {
+  @media (max-width: 800px) {
     left: 10px;
     bottom: 10px;
   }
@@ -64,11 +64,11 @@ const OutOfStockField = styled.p`
 const ShopField = styled.p`
   font-size: 14px;
   position: absolute;
-  @media (min-width: 425px) {
+  @media (min-width: 800px) {
     right: 10px;
     bottom: 10px;
   }
-  @media (max-width: 425px) {
+  @media (max-width: 800px) {
     display: none;
   }
 `;

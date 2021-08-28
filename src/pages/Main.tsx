@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 
 const Container = styled.div`

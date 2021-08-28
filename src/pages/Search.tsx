@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import qs from 'querystring';
 import SearchBar from '../components/SearchBar';
