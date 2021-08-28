@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import logo from '../logo.svg';
