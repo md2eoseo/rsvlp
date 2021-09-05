@@ -43,7 +43,7 @@ function Search() {
     if (keyword.length > 1) {
       setLoading(true);
       let items = await axios
-        .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
+        .get(process.env.NODE_ENV === 'development' ? `http://localhost:4000/api/search/${keyword}` : `/api/search/${keyword}`)
         .then(data => data.data);
       items = items.filter((item: ItemInterface) => !item.outOfStock).concat(items.filter((item: ItemInterface) => item.outOfStock));
       setItems(items);

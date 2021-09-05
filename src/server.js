@@ -225,9 +225,9 @@ const getItems = async (keyword, pageNums) => {
   return raw.flat(1);
 };
 
-app.post('/', async (req, res) => {
+app.get('/api/search/:keyword', async (req, res) => {
   const {
-    body: { keyword },
+    params: { keyword },
   } = req;
   const pageNums = await getPageNums(keyword);
   await getItems(keyword, pageNums).then(data => res.send(data));
