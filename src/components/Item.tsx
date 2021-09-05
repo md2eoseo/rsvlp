@@ -107,7 +107,12 @@ const Heart = styled.div<HeartProps>`
 `;
 
 function Item({ shop, name, price, outOfStock, imgUrl, url }: any) {
-  const [isLiked, setIsLiked] = useState(false);
+  const checkLikes = () => {
+    const likeUrls = JSON.parse(localStorage.getItem('likes') || '[]').map((like: any) => like.url);
+    return likeUrls.includes(url);
+  };
+
+  const [isLiked, setIsLiked] = useState(checkLikes);
 
   const handleClick = (e: any) => {
     let i = 3;
@@ -123,6 +128,14 @@ function Item({ shop, name, price, outOfStock, imgUrl, url }: any) {
     if (!isHeart) {
       window.open(url);
     } else {
+      const likes = JSON.parse(localStorage.getItem('likes') || '[]');
+      if (!isLiked) {
+        likes.push({ shop, name, price, outOfStock, imgUrl, url });
+      } else {
+        const removeIndex = likes.findIndex((like: any) => like.url === url);
+        likes.splice(removeIndex, 1);
+      }
+      localStorage.setItem('likes', JSON.stringify(likes));
       setIsLiked(!isLiked);
     }
   };
