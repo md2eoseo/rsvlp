@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import qs from 'querystring';
 import SearchBar from '../components/SearchBar';
-import Card from '../components/Item';
+import Item from '../components/Item';
 import { useEffect } from 'react';
 import axios from 'axios';
 
-export interface Item {
+export interface ItemInterface {
   shop: string;
   name: string;
   price: string;
@@ -18,15 +18,19 @@ export interface Item {
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 0 30vw;
+  padding: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Items = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   margin-top: 20px;
-  min-width: 300px;
+  max-width: 1080px;
 `;
 
 function Search() {
@@ -41,7 +45,7 @@ function Search() {
       let items = await axios
         .post(process.env.NODE_ENV === 'development' ? 'http://localhost:4000/' : '/', { keyword })
         .then(data => data.data);
-      items = items.filter((item: Item) => !item.outOfStock).concat(items.filter((item: Item) => item.outOfStock));
+      items = items.filter((item: ItemInterface) => !item.outOfStock).concat(items.filter((item: ItemInterface) => item.outOfStock));
       setItems(items);
       setLoading(false);
     }
@@ -69,8 +73,8 @@ function Search() {
         </Items>
       ) : (
         <Items>
-          {items.map((item: Item, i) => (
-            <Card
+          {items.map((item: ItemInterface, i) => (
+            <Item
               key={i}
               shop={item.shop}
               name={item.name}
