@@ -13,6 +13,7 @@ const Container = styled.div<ContainerProps>`
   flex-direction: column;
   width: 245px;
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+  cursor: pointer;
   :hover {
     transform: scale(1.05);
 

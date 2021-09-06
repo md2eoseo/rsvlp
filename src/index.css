@@ -1,3 +1,4 @@
+/* Reset CSS */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,6 +22,7 @@ a {
   text-decoration: none;
 }
 
+/* Loading CSS */
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -54,5 +56,24 @@ a {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* Logo CSS */
+.Logo {
+  display: block;
+  text-shadow: 0 0 10px gold, 0 0 20px firebrick, 0 0 40px pink, 0 0 80px red;
+  will-change: filter, color;
+  filter: saturate(60%);
+  animation: flicker steps(100) 5s 1s infinite;
+  font-size: 48px;
+  color: lightyellow;
+  font-family: Londrina Outline;
+}
+
+@keyframes flicker {
+  50% {
+    color: white;
+    filter: saturate(200%) hue-rotate(20deg);
   }
 }
