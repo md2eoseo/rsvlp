@@ -9,6 +9,7 @@ const app = express();
 
 const shops = {
   gimbab: '김밥레코즈',
+  gimbab2: '김밥레코즈2',
   doperecord: '도프레코드',
   rm360: 'rm.360',
   soundsgood: '사운즈굿 스토어',
@@ -17,6 +18,7 @@ const shops = {
 };
 const baseUrls = {
   gimbab: 'https://gimbabrecords.com',
+  gimbab2: 'https://gimbabrecords2.com',
   doperecord: 'https://doperecord.com',
   rm360: 'http://rm360.cafe24.com',
   soundsgood: 'https://soundsgood-store.com',
@@ -25,6 +27,7 @@ const baseUrls = {
 };
 const searchUrls = {
   gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
+  gimbab2: 'https://gimbabrecords2.com/product/search.html?keyword=',
   doperecord: 'https://doperecord.com/product/search.html?keyword=',
   rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
   // soundsgood: 'https://soundsgood-store.com/productSearch?',
@@ -51,6 +54,7 @@ const getPageNums = async keyword => {
     let page = 1;
     switch (shop) {
       case 'gimbab':
+      case 'gimbab2':
       case 'doperecord':
       case 'rm360':
         return getHtml(shop, `${url}${keyword}`).then(async data => {
@@ -59,6 +63,9 @@ const getPageNums = async keyword => {
           switch (shop) {
             case 'gimbab':
               page = $('#paging ol').children().length;
+              break;
+            case 'gimbab2':
+              page = $('.xans-search-paging ol').children().length;
               break;
             case 'doperecord':
               page = $('.xans-search-paging .xans-record-').length;
@@ -110,6 +117,7 @@ const getPageNums = async keyword => {
 const generateSearchUrl = (shop, keyword, page) => {
   switch (shop) {
     case 'gimbab':
+    case 'gimbab2':
     case 'doperecord':
     case 'rm360':
       return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
@@ -127,6 +135,7 @@ const getItems = async (keyword, pageNums) => {
     const pagePromises = new Array(pageNums[shop]).fill(null).map(async (_, i) => {
       switch (shop) {
         case 'gimbab':
+        case 'gimbab2':
         case 'doperecord':
         case 'rm360':
           return getHtml(shop, generateSearchUrl(shop, keyword, i)).then(data => {
@@ -140,9 +149,21 @@ const getItems = async (keyword, pageNums) => {
                     shop: shops[shop],
                     name: $('.name .title', el).next().text().trim(),
                     price: $('ul.xans-search-listitem .title', el).next().first().text().trim(),
-                    outOfStock: $('.name a', el).next().attr('alt').trim() === '품절',
+                    outOfStock: $('.name a', el)?.next()?.attr('alt')?.trim() === '품절',
                     imgUrl: 'https:' + $('.thumb', el).attr('src').trim(),
                     url: baseUrls[shop] + $('.name a', el).attr('href').trim(),
+                  };
+                });
+                break;
+              case 'gimbab2':
+                $('.prdList .xans-record-').each((i, el) => {
+                  items[i] = {
+                    shop: shops[shop],
+                    name: $('.name', el).text().trim(),
+                    price: $('.price', el).text().trim(),
+                    outOfStock: $('.promotion img', el)?.first()?.attr('alt')?.trim() === '품절',
+                    imgUrl: 'https:' + $('.thumbnail img', el).attr('src').trim(),
+                    url: baseUrls[shop] + $('.thumbnail a', el).attr('href').trim(),
                   };
                 });
                 break;

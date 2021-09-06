@@ -9,6 +9,7 @@
 - [김밥레코즈](https://gimbabrecords.com/index.html)
 - [도프레코드](https://doperecord.com/)
 - [rm.360](http://rm360.cafe24.com/index.html)
-- [사운즈굿 스토어](https://soundsgood-store.com/)
+- [김밥레코즈2](https://gimbabrecords.com2/)
+<!-- - [사운즈굿 스토어](https://soundsgood-store.com/)
 - [서울바이닐](https://www.seoulvinyl.com/)
-- [웰컴레코즈](https://welcomerecords.kr/)
+- [웰컴레코즈](https://welcomerecords.kr/) -->
