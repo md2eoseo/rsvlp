@@ -44,10 +44,12 @@ const Info = styled.div`
 
 type FieldProps = {
   fontSize?: number;
+  fontWeight?: number;
 };
 
 const Field = styled.p<FieldProps>(props => ({
   fontSize: props.fontSize || 16 + 'px',
+  fontWeight: props.fontWeight || 400,
 }));
 
 const OutOfStock = styled.div`
@@ -160,7 +162,9 @@ function Item({ shop, name, price, outOfStock, imgUrl, url }: any) {
         </svg>
       </Heart>
       <Info>
-        <Field style={{ marginBottom: '8px' }}>{name}</Field>
+        <Field style={{ marginBottom: '8px' }} fontWeight={700}>
+          {name}
+        </Field>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Field>{price}</Field>
           <Field>{shop}</Field>
