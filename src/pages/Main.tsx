@@ -10,7 +10,6 @@ const Container = styled.div`
 `;
 
 const Logo = styled.h1`
-  color: white;
   margin-top: 60px;
   margin-bottom: 40px;
 `;
@@ -18,7 +17,9 @@ const Logo = styled.h1`
 function Main() {
   return (
     <Container>
-      <Logo className="Logo">한국 레코드샵 LP 검색</Logo>
+      <Logo className="Logo" onMouseDown={e => (e.preventDefault ? e.preventDefault() : false)}>
+        한국 레코드샵에서 LP 검색
+      </Logo>
       <SearchBar />
     </Container>
   );
