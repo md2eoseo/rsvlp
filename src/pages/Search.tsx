@@ -83,6 +83,7 @@ function Search() {
               outOfStock={item.outOfStock}
               imgUrl={item.imgUrl}
               url={item.url}
+              delay={i * 100}
             />
           ))}
         </Items>

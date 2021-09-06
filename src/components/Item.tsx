@@ -5,15 +5,21 @@ import styled from 'styled-components';
 
 type ContainerProps = {
   outOfStock: boolean;
+  delay?: number;
 };
 
 const Container = styled.div<ContainerProps>`
+  opacity: 0;
   position: relative;
   display: flex;
   flex-direction: column;
   width: 245px;
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
   cursor: pointer;
+  animation-name: slidein;
+  animation-duration: 100ms;
+  animation-delay: ${props => props.delay + 'ms'};
+
   :hover {
     transform: scale(1.05);
 
@@ -26,6 +32,17 @@ const Container = styled.div<ContainerProps>`
     }
 
     .Heart {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slidein {
+    from {
+      transform: translateX(-10px);
+      opacity: 0;
+    }
+
+    to {
       opacity: 1;
     }
   }
@@ -109,10 +126,14 @@ const Heart = styled.div<HeartProps>`
   }
 `;
 
-function Item({ shop, name, price, outOfStock, imgUrl, url }: any) {
+function Item({ shop, name, price, outOfStock, imgUrl, url, delay }: any) {
   const checkLikes = () => {
     const likeUrls = JSON.parse(localStorage.getItem('likes') || '[]').map((like: any) => like.url);
     return likeUrls.includes(url);
+  };
+
+  const setVisible = (e: any) => {
+    e.target.style.opacity = 1;
   };
 
   const [isLiked, setIsLiked] = useState(checkLikes);
@@ -144,7 +165,7 @@ function Item({ shop, name, price, outOfStock, imgUrl, url }: any) {
   };
 
   return (
-    <Container outOfStock={outOfStock} onClick={handleClick}>
+    <Container outOfStock={outOfStock} delay={delay} onClick={handleClick} onAnimationEnd={setVisible}>
       <Image className="Image" src={imgUrl} alt="imgUrl" />
       {outOfStock && <OutOfStock className="OutOfStock">품절</OutOfStock>}
       <Heart className={`Heart ${isLiked && 'on'}`} isLiked={isLiked}>
