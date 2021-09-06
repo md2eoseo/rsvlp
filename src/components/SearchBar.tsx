@@ -17,19 +17,20 @@ const SearchInput = styled.input`
   padding-left: 32px;
   padding-right: 72px;
   font-size: 1.5rem;
+  font-weight: 600;
   border: none;
   border-radius: 50vh;
   outline: none;
   ::placeholder {
     font-size: 1.5rem;
   }
-  @media (max-width: 800px) {
-    height: 32px;
-    padding-left: 16px;
-    padding-right: 36px;
-    font-size: 1rem;
+  @media (max-width: 1080px) {
+    height: 48px;
+    padding-left: 24px;
+    padding-right: 52px;
+    font-size: 1.15rem;
     ::placeholder {
-      font-size: 1rem;
+      font-size: 1.15rem;
     }
   }
 `;
@@ -46,7 +47,7 @@ const SearchButton = styled.button`
   border-radius: 60px;
   outline: none;
   background-color: transparent;
-  @media (max-width: 800px) {
+  @media (max-width: 1080px) {
     right: 1px;
     top: 1px;
   }
@@ -59,9 +60,9 @@ const Logo = styled.img`
   :hover {
     animation-duration: 3s;
   }
-  @media (max-width: 800px) {
-    width: 30px;
-    height: 30px;
+  @media (max-width: 1080px) {
+    width: 46px;
+    height: 46px;
   }
 
   @keyframes spin {
@@ -79,8 +80,8 @@ const ErrorMsg = styled.p`
   color: white;
   font-size: 1.5rem;
   text-align: center;
-  @media (max-width: 800px) {
-    font-size: 1rem;
+  @media (max-width: 1080px) {
+    font-size: 1.15rem;
   }
 `;
 

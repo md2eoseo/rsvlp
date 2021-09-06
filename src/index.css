@@ -70,7 +70,6 @@ a {
   will-change: filter, color;
   filter: saturate(60%);
   animation: flicker steps(100) 5s 1s infinite;
-  font-size: 48px;
   color: lightyellow;
   font-family: 'Londrina Outline', 'Gowun Dodum';
 }
