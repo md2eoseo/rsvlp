@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 type ContainerProps = {
   outOfStock: boolean;
-  delay?: number;
+  delay: number;
 };
 
 const Container = styled.div<ContainerProps>`
@@ -14,10 +14,9 @@ const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   width: 245px;
-  transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
   cursor: pointer;
   animation-name: slidein;
-  animation-duration: 100ms;
+  animation-duration: 1000ms;
   animation-delay: ${props => props.delay + 'ms'};
 
   :hover {
@@ -38,7 +37,7 @@ const Container = styled.div<ContainerProps>`
 
   @keyframes slidein {
     from {
-      transform: translateX(-10px);
+      transform: translateX(-50px);
       opacity: 0;
     }
 
