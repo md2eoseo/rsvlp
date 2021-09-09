@@ -86,10 +86,11 @@ type HeartProps = {
 
 const Heart = styled.div<HeartProps>`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   opacity: ${props => (props.isLiked ? 1 : 0)};
   width: 32px;
+  transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
 
   svg use {
     fill: transparent;
@@ -122,6 +123,10 @@ const Heart = styled.div<HeartProps>`
 
   .hide {
     display: none;
+  }
+
+  &:hover {
+    transform: scale(1.2);
   }
 `;
 
