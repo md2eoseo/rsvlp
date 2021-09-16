@@ -101,7 +101,7 @@ function SearchBar({ initialKeyword = '' }: any) {
   const onSearch = (e: any) => {
     e.preventDefault();
     const trimmedKeyword = keyword.trim();
-    if (trimmedKeyword.length > 1) history.push(`/search?keyword=${trimmedKeyword}`);
+    if (trimmedKeyword.length > 1) history.push(`/search?keyword=${trimmedKeyword}`, { prevPath: history.location.pathname });
     else setErrorMsg('검색어는 최소 2자 이상 적어주세요.');
   };
   return (

@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import qs from 'querystring';
 import SearchBar from '../components/SearchBar';
 import Item from '../components/Item';
 import { useEffect } from 'react';
 import axios from 'axios';
+import home from '../home.svg';
 
 export interface ItemInterface {
   shop: string;
@@ -24,6 +25,42 @@ const Container = styled.div`
   align-items: center;
 `;
 
+type HeaderProps = {
+  animated: boolean;
+};
+
+const Header = styled.header<HeaderProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  background-image: linear-gradient(to bottom right, #002f4b, #dc4225);
+  width: 100vw;
+  height: 64px;
+  border-bottom: 1px solid black;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  animation-name: ${props => (props.animated ? 'slidedown' : 'none')};
+  animation-duration: 1000ms;
+
+  @keyframes slidedown {
+    from {
+      transform: translateY(-64px);
+    }
+  }
+`;
+
+const Home = styled.img`
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+`;
+
+const Empty = styled.div`
+  height: 64px;
+`;
+
 const Items = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -34,7 +71,12 @@ const Items = styled.div`
   max-width: 1080px;
 `;
 
-function Search() {
+function Search({
+  location: {
+    state: { prevPath },
+  },
+}: any) {
+  const history = useHistory();
   const { search } = useLocation();
   const keyword = qs.parse(search.slice(1)).keyword;
   const [loading, setLoading] = useState<boolean>();
@@ -58,7 +100,11 @@ function Search() {
 
   return (
     <Container>
-      <SearchBar initialKeyword={keyword} />
+      <Header animated={prevPath === '/'}>
+        <Home src={home} alt="homeButton" onClick={() => history.push('/')} />
+      </Header>
+      <Empty></Empty>
+      <SearchBar initialKeyword={keyword} prevPath={prevPath} />
       {loading ? (
         <div className="lds-ring">
           <div></div>

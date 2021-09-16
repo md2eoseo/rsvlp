@@ -14,6 +14,7 @@ const Logo = styled.h1`
   font-size: 48px;
   margin-top: 60px;
   margin-bottom: 40px;
+  cursor: default;
 
   @media (max-width: 1080px) {
     font-size: 24px;
