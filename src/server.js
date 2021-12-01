@@ -21,18 +21,18 @@ const baseUrls = {
   gimbab2: 'https://gimbabrecords2.com',
   doperecord: 'https://doperecord.com',
   rm360: 'http://rm360.cafe24.com',
-  soundsgood: 'https://soundsgood-store.com',
-  seoulvinyl: 'https://www.seoulvinyl.com',
-  welcome: 'https://welcomerecords.kr',
+  // soundsgood: 'https://soundsgood-store.com',
+  // seoulvinyl: 'https://www.seoulvinyl.com',
+  // welcome: 'https://welcomerecords.kr',
 };
 const searchUrls = {
-  gimbab: 'https://gimbabrecords.com/product/search.html?keyword=',
-  gimbab2: 'https://gimbabrecords2.com/product/search.html?keyword=',
-  doperecord: 'https://doperecord.com/product/search.html?keyword=',
-  rm360: 'http://rm360.cafe24.com/product/search.html?keyword=',
-  // soundsgood: 'https://soundsgood-store.com/productSearch?',
-  // seoulvinyl: 'https://www.seoulvinyl.com/productSearch?',
-  // welcome: 'https://welcomerecords.kr/productSearch?',
+  gimbab: `${baseUrls.gimbab}/product/search.html?keyword=`,
+  gimbab2: `${baseUrls.gimbab2}/product/search.html?keyword=`,
+  doperecord: `${baseUrls.doperecord}/product/search.html?keyword=`,
+  rm360: `${baseUrls.rm360}/product/search.html?keyword=`,
+  // soundsgood: `${baseUrls.soundsgood}/productSearch?`,
+  // seoulvinyl: `${baseUrls.seoulvinyl}/productSearch?`,
+  // welcome: `${baseUrls.welcome}/productSearch?`,
 };
 
 app.use(cors());
@@ -62,15 +62,11 @@ const getPageNums = async keyword => {
           const $ = cheerio.load(html.data);
           switch (shop) {
             case 'gimbab':
-              page = $('#paging ol').children().length;
-              break;
             case 'gimbab2':
+            case 'doperecord':
+            case 'rm360':
               page = $('.xans-search-paging ol').children().length;
               break;
-            case 'doperecord':
-              page = $('.xans-search-paging .xans-record-').length;
-            case 'rm360':
-              page = $('.xans-search-paging .xans-record-').length;
             default:
               break;
           }
@@ -81,7 +77,7 @@ const getPageNums = async keyword => {
       case 'welcome':
         const browser = await puppeteer.launch();
         const rawPage = await browser.newPage();
-        const result = rawPage
+        await rawPage
           .waitForSelector('.paginationNumbers', { timeout: 5000 })
           .then(() => rawPage.content())
           .then(async html => {
@@ -98,11 +94,11 @@ const getPageNums = async keyword => {
             await browser.close();
             return page;
           })
-          .catch(err => {
-            console.log(err);
-            return 1;
+          .catch(() => {
+            console.log(`${shop}'s page number is 0 or 1.`);
+            return page;
           });
-        return { shop, page: await rawPage.goto(`${url}productSearchKeyword=${keyword}`).then(() => result) };
+        return { shop, page: await rawPage.goto(`${url}productSearchKeyword=${keyword}`) };
     }
   });
 
@@ -124,7 +120,7 @@ const generateSearchUrl = (shop, keyword, page) => {
     case 'soundsgood':
     case 'seoulvinyl':
     case 'welcome':
-      return `${searchUrls[shop]}${page + 1 === 1 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
+      return `${searchUrls[shop]}${page === 0 ? '' : `productListPage=${page + 1}&`}productSearchKeyword=${keyword}`;
     default:
       break;
   }
@@ -230,8 +226,8 @@ const getItems = async (keyword, pageNums) => {
               await browser.close();
               return items;
             })
-            .catch(err => {
-              console.log(err);
+            .catch(() => {
+              console.log(`Cannot get items from ${shop} #${i + 1}`);
               return [];
             });
           return rawPage.goto(generateSearchUrl(shop, keyword, i)).then(() => items);
@@ -251,7 +247,8 @@ app.get('/api/search/:keyword', async (req, res) => {
     params: { keyword },
   } = req;
   const pageNums = await getPageNums(keyword);
-  await getItems(keyword, pageNums).then(data => res.send(data));
+  const items = await getItems(keyword, pageNums);
+  return res.send(items);
 });
 
 app.listen(PORT, () => console.log(`Server listening at http://localhost:${PORT}`));
