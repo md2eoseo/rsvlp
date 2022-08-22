@@ -156,14 +156,14 @@ const getItems = async (keyword, pageNums) => {
                 });
                 break;
               case 'gimbab2':
-                $('.prdList .xans-record-').each((i, el) => {
+                $('.prdList > .xans-record-').each((i, el) => {
                   items[i] = {
                     shop: shops[shop],
                     name: $('.name', el).text().trim(),
-                    price: $('.price', el).text().trim(),
+                    price: $('.title', el).next().text().trim(),
                     outOfStock: $('.promotion img', el)?.first()?.attr('alt')?.trim() === '품절',
-                    imgUrl: 'https:' + $('.thumbnail img', el).attr('src').trim(),
-                    url: baseUrls[shop] + $('.thumbnail a', el).attr('href').trim(),
+                    imgUrl: 'https:' + $('.thumbnail img', el)?.attr('src')?.trim(),
+                    url: baseUrls[shop] + $('.thumbnail a', el)?.attr('href')?.trim(),
                   };
                 });
                 break;
