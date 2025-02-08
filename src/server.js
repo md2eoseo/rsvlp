@@ -11,7 +11,6 @@ const shops = {
   gimbab: '김밥레코즈',
   gimbab2: '김밥레코즈2',
   doperecord: '도프레코드',
-  rm360: 'rm.360',
   soundsgood: '사운즈굿 스토어',
   seoulvinyl: '서울바이닐',
   welcome: '웰컴레코즈',
@@ -20,7 +19,6 @@ const baseUrls = {
   gimbab: 'https://gimbabrecords.com',
   gimbab2: 'https://gimbabrecords2.com',
   doperecord: 'https://doperecord.com',
-  rm360: 'http://rm360.cafe24.com',
   // soundsgood: 'https://soundsgood-store.com',
   // seoulvinyl: 'https://www.seoulvinyl.com',
   // welcome: 'https://welcomerecords.kr',
@@ -29,7 +27,6 @@ const searchUrls = {
   gimbab: `${baseUrls.gimbab}/product/search.html?keyword=`,
   gimbab2: `${baseUrls.gimbab2}/product/search.html?keyword=`,
   doperecord: `${baseUrls.doperecord}/product/search.html?keyword=`,
-  rm360: `${baseUrls.rm360}/product/search.html?keyword=`,
   // soundsgood: `${baseUrls.soundsgood}/productSearch?`,
   // seoulvinyl: `${baseUrls.seoulvinyl}/productSearch?`,
   // welcome: `${baseUrls.welcome}/productSearch?`,
@@ -56,7 +53,6 @@ const getPageNums = async keyword => {
       case 'gimbab':
       case 'gimbab2':
       case 'doperecord':
-      case 'rm360':
         return getHtml(shop, `${url}${keyword}`).then(async data => {
           const { shop, html } = data;
           const $ = cheerio.load(html.data);
@@ -64,7 +60,6 @@ const getPageNums = async keyword => {
             case 'gimbab':
             case 'gimbab2':
             case 'doperecord':
-            case 'rm360':
               page = $('.xans-search-paging ol').children().length;
               break;
             default:
@@ -115,7 +110,6 @@ const generateSearchUrl = (shop, keyword, page) => {
     case 'gimbab':
     case 'gimbab2':
     case 'doperecord':
-    case 'rm360':
       return `${searchUrls[shop]}${keyword}&page=${page + 1}`;
     case 'soundsgood':
     case 'seoulvinyl':
@@ -133,7 +127,6 @@ const getItems = async (keyword, pageNums) => {
         case 'gimbab':
         case 'gimbab2':
         case 'doperecord':
-        case 'rm360':
           return getHtml(shop, generateSearchUrl(shop, keyword, i)).then(data => {
             const items = [];
             const { shop, html } = data;
@@ -172,18 +165,6 @@ const getItems = async (keyword, pageNums) => {
                     outOfStock: $('.promotion img', el)?.attr('alt') === '품절',
                     imgUrl: 'https:' + $('.prdImg img', el).attr('src'),
                     url: baseUrls[shop] + $('.prdImg a', el).attr('href'),
-                  };
-                });
-                break;
-              case 'rm360':
-                $('.prdList > li').each((i, el) => {
-                  items[i] = {
-                    shop: shops[shop],
-                    name: $('.name', el).text().trim(),
-                    price: $('ul.xans-search-listitem .title', el).next().first().text().trim(),
-                    outOfStock: $('.icon .icon_img', el)?.attr('alt') === '품절',
-                    imgUrl: 'http:' + $('.thumb', el).attr('src'),
-                    url: baseUrls[shop] + $('.box > a', el).attr('href'),
                   };
                 });
                 break;

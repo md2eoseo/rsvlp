@@ -2,7 +2,7 @@
   "name": "rsvlp",
   "version": "0.1.0",
   "engines": {
-    "node": "16.13.0"
+    "node": ">=18.0.0"
   },
   "private": true,
   "dependencies": {
@@ -33,15 +33,15 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start:client": "react-scripts start",
-    "build": "react-scripts build",
+    "start:client": "NODE_OPTIONS='--openssl-legacy-provider' react-scripts start",
+    "build": "NODE_OPTIONS='--openssl-legacy-provider' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:server": "nodemon --watch src/ src/server.js",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
-    "dev:server": "yarn start:server",
-    "dev:client": "yarn start:client",
-    "heroku-postbuild": "yarn && yarn build",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run start:server",
+    "dev:client": "npm run start:client",
+    "heroku-postbuild": "npm install && npm build",
     "start": "node src/server.js"
   },
   "eslintConfig": {

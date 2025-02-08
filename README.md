@@ -7,9 +7,12 @@
 ### 현재 검색 가능 레코드샵
 
 - [김밥레코즈](https://gimbabrecords.com/index.html)
-- [도프레코드](https://doperecord.com/)
-- [rm.360](http://rm360.cafe24.com/index.html)
 - [김밥레코즈2](https://gimbabrecords.com2/)
-<!-- - [사운즈굿 스토어](https://soundsgood-store.com/)
-- [서울바이닐](https://www.seoulvinyl.com/)
-- [웰컴레코즈](https://welcomerecords.kr/) -->
+- [도프레코드](https://doperecord.com/)
+  <!-- - [사운즈굿 스토어](https://soundsgood-store.com/) -->
+  <!-- - [서울바이닐](https://www.seoulvinyl.com/) -->
+  <!-- - [웰컴레코즈](https://welcomerecords.kr/) -->
+
+  Node.js 18.20.6
+
+  npm run dev
