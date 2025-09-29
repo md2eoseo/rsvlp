@@ -133,25 +133,14 @@ const getItems = async (keyword, pageNums) => {
             const $ = cheerio.load(html.data);
             switch (shop) {
               case 'gimbab':
-                $('.prdList .item').each((i, el) => {
-                  items[i] = {
-                    shop: shops[shop],
-                    name: $('.name .title', el).next().text().trim(),
-                    price: $('ul.xans-search-listitem .title', el).next().first().text().trim(),
-                    outOfStock: $('.name a', el)?.next()?.attr('alt')?.trim() === '품절',
-                    imgUrl: 'https:' + $('.thumb', el).attr('src').trim(),
-                    url: baseUrls[shop] + $('.name a', el).attr('href').trim(),
-                  };
-                });
-                break;
               case 'gimbab2':
                 $('.prdList > .xans-record-').each((i, el) => {
                   items[i] = {
                     shop: shops[shop],
                     name: $('.name', el).text().trim(),
                     price: $('.title', el).next().text().trim(),
-                    outOfStock: $('.promotion img', el)?.first()?.attr('alt')?.trim() === '품절',
-                    imgUrl: 'https:' + $('.thumbnail img', el)?.attr('src')?.trim(),
+                    outOfStock: $('.icon_img', el)?.attr('alt') === '품절',
+                    imgUrl: $('.thumbnail img', el)?.attr('src')?.trim(),
                     url: baseUrls[shop] + $('.thumbnail a', el)?.attr('href')?.trim(),
                   };
                 });
@@ -162,9 +151,9 @@ const getItems = async (keyword, pageNums) => {
                     shop: shops[shop],
                     name: $('.name', el).text().trim(),
                     price: $('ul.xans-search-listitem .title', el).next().first().text().trim(),
-                    outOfStock: $('.promotion img', el)?.attr('alt') === '품절',
-                    imgUrl: 'https:' + $('.prdImg img', el).attr('src'),
-                    url: baseUrls[shop] + $('.prdImg a', el).attr('href'),
+                    outOfStock: $('.icon_img', el)?.attr('alt') === '품절',
+                    imgUrl: "https:" + $('.thumbnail img', el)?.attr('src')?.trim(),
+                    url: baseUrls[shop] + $('.thumbnail a', el)?.attr('href')?.trim(),
                   };
                 });
                 break;

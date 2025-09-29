@@ -38,10 +38,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:server": "nodemon --watch src/ src/server.js",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "npm run start:server",
-    "dev:client": "npm run start:client",
-    "heroku-postbuild": "npm install && npm build",
+    "app": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build:client": "npm install && npm run build",
     "start": "node src/server.js"
   },
   "eslintConfig": {

@@ -15,4 +15,4 @@
 
   Node.js 18.20.6
 
-  npm run dev
+  npm run app
